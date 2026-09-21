@@ -7,10 +7,7 @@
   :root {
     --ground: #E9EEEC;
     --ground-2: #DFE7E4;
-    --surface: #FBFDFC;
 
-    /* Liquid glass: a translucent layer, a bright specular top edge, and a
-       faint inner rim. The three together are what read as material. */
     --glass: rgba(255, 255, 255, 0.58);
     --glass-strong: rgba(255, 255, 255, 0.74);
     --glass-rim: rgba(11, 38, 32, 0.09);
@@ -29,6 +26,15 @@
     --solid: #0E8A6C;
     --slipping: #A67A08;
     --weak: #C22B52;
+
+    /* Sequential ramp for the consistency grid — one hue, light to dark.
+       Step is set by how much was retained that day, not by attendance. */
+    --h0: rgba(13, 24, 22, 0.055);
+    --h1: #C6E7DC;
+    --h2: #8ECFBC;
+    --h3: #4FAE92;
+    --h4: #0E8A6C;
+    --h5: #07634C;
 
     --r-lg: 28px;
     --r-md: 20px;
@@ -49,7 +55,6 @@
     :root:not([data-theme="light"]) {
       --ground: #070C0B;
       --ground-2: #0C1413;
-      --surface: #101817;
 
       --glass: rgba(255, 255, 255, 0.055);
       --glass-strong: rgba(255, 255, 255, 0.09);
@@ -69,13 +74,19 @@
       --solid: #2F9A7E;
       --slipping: #B08C2B;
       --weak: #C44B4C;
+
+      --h0: rgba(255, 255, 255, 0.055);
+      --h1: #123F35;
+      --h2: #1A5D4D;
+      --h3: #237C66;
+      --h4: #2F9A7E;
+      --h5: #52C2A3;
     }
   }
 
   :root[data-theme="dark"] {
     --ground: #070C0B;
     --ground-2: #0C1413;
-    --surface: #101817;
 
     --glass: rgba(255, 255, 255, 0.055);
     --glass-strong: rgba(255, 255, 255, 0.09);
@@ -95,6 +106,13 @@
     --solid: #2F9A7E;
     --slipping: #B08C2B;
     --weak: #C44B4C;
+
+    --h0: rgba(255, 255, 255, 0.055);
+    --h1: #123F35;
+    --h2: #1A5D4D;
+    --h3: #237C66;
+    --h4: #2F9A7E;
+    --h5: #52C2A3;
   }
 
   * { box-sizing: border-box; }
@@ -110,7 +128,6 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Glass needs something behind it to refract, or it reads as flat grey. */
   body::before {
     content: "";
     position: fixed;
@@ -132,8 +149,6 @@
     padding-inline: 18px;
   }
 
-  /* ---------- glass primitive ---------- */
-
   .glass {
     background: var(--glass);
     backdrop-filter: blur(var(--blur)) saturate(180%);
@@ -144,8 +159,6 @@
       inset 0 0 0 1px var(--glass-rim),
       var(--glass-shadow);
   }
-
-  /* ---------- top bar ---------- */
 
   .topbar {
     display: flex;
@@ -160,7 +173,6 @@
     font-size: var(--step-3);
     font-weight: 500;
     margin: 0;
-    letter-spacing: 0.01em;
   }
   .wordmark span { color: var(--accent); }
 
@@ -171,8 +183,6 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* ---------- screens + fades ---------- */
-
   .screen {
     min-height: 0;
     overflow-y: auto;
@@ -182,9 +192,7 @@
   }
   .screen::-webkit-scrollbar { display: none; }
 
-  .fade > * {
-    animation: fade-rise 420ms var(--ease) both;
-  }
+  .fade > * { animation: fade-rise 420ms var(--ease) both; }
   .fade > *:nth-child(2) { animation-delay: 55ms; }
   .fade > *:nth-child(3) { animation-delay: 110ms; }
   .fade > *:nth-child(4) { animation-delay: 165ms; }
@@ -196,14 +204,12 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .fade > * { animation: none !important; }
+    .fade > *, .answer-block, .sheet { animation: none !important; }
     * { transition-duration: 0.01ms !important; }
   }
 
   .stack { display: flex; flex-direction: column; gap: 14px; }
-
-  /* ---------- goal ---------- */
-
+  .card { padding: 18px; }
   .goal { padding: 20px; }
 
   .eyebrow {
@@ -225,42 +231,28 @@
     margin: 8px 0 14px;
   }
 
-  .bar {
-    height: 6px;
-    border-radius: 999px;
-    background: var(--hairline);
-    overflow: hidden;
-  }
+  .bar { height: 6px; border-radius: 999px; background: var(--hairline); overflow: hidden; }
   .bar i {
-    display: block;
-    height: 100%;
-    border-radius: 999px;
+    display: block; height: 100%; border-radius: 999px;
     background: var(--accent);
     transition: width 700ms var(--ease);
   }
 
   .goal-foot {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 10px;
-    margin-top: 10px;
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 10px; margin-top: 10px;
   }
 
   .pct {
     font-family: "Newsreader", Georgia, serif;
-    font-size: var(--step-4);
-    font-weight: 400;
+    font-size: var(--step-4); font-weight: 400;
     font-variant-numeric: tabular-nums;
   }
 
-  .pace {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
     font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: var(--step-0);
-    color: var(--ink-2);
+    font-size: var(--step-0); color: var(--ink-2); white-space: nowrap;
   }
   .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
 
@@ -275,65 +267,37 @@
     gap: 0 12px;
     padding-block: 14px;
   }
-
-  /* connector drawn behind the markers, stopping at the last node */
   .node::before {
-    content: "";
-    position: absolute;
-    left: 12px;
-    top: 0;
-    bottom: 0;
-    width: 1.5px;
-    background: var(--hairline);
+    content: ""; position: absolute; left: 12px; top: 0; bottom: 0;
+    width: 1.5px; background: var(--hairline);
   }
   .node:first-child::before { top: 50%; }
   .node:last-child::before { bottom: 50%; }
   .node.done::before { background: var(--accent-line); }
 
   .marker {
-    position: relative;
-    z-index: 1;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
+    position: relative; z-index: 1;
+    width: 25px; height: 25px; border-radius: 50%;
+    display: grid; place-items: center;
     background: var(--ground);
     box-shadow: inset 0 0 0 1.5px var(--hairline);
     font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 0.6875rem;
-    color: var(--ink-3);
+    font-size: 0.6875rem; color: var(--ink-3);
     align-self: center;
   }
-  .node.done .marker {
-    background: var(--accent);
-    box-shadow: none;
-    color: #fff;
-  }
-  .node.now .marker {
-    box-shadow: inset 0 0 0 2px var(--accent), 0 0 0 5px var(--accent-soft);
-    color: var(--accent);
-  }
+  .node.done .marker { background: var(--accent); box-shadow: none; color: #fff; }
+  .node.now .marker { box-shadow: inset 0 0 0 2px var(--accent), 0 0 0 5px var(--accent-soft); color: var(--accent); }
 
   .node-body { min-width: 0; align-self: center; }
-
-  .node-name {
-    font-size: var(--step-2);
-    font-weight: 500;
-    margin: 0;
-    color: var(--ink);
-  }
-  .node.locked .node-name { color: var(--ink-3); font-weight: 400; }
+  .node-name { font-size: var(--step-2); font-weight: 500; margin: 0; }
+  .node.locked .node-name, .node.optional .node-name { color: var(--ink-3); font-weight: 400; }
 
   .node-sub {
     font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: var(--step-0);
-    color: var(--ink-3);
-    margin: 3px 0 0;
-    font-variant-numeric: tabular-nums;
+    font-size: var(--step-0); color: var(--ink-3);
+    margin: 3px 0 0; font-variant-numeric: tabular-nums;
   }
 
-  /* the current module opens into the one thing to do next */
   .now-card {
     grid-column: 2;
     margin-top: 12px;
@@ -348,7 +312,7 @@
       var(--glass-shadow);
   }
 
-  .now-card p.task {
+  .serif-lead {
     font-family: "Newsreader", Georgia, serif;
     font-size: var(--step-3);
     line-height: 1.34;
@@ -359,16 +323,10 @@
   /* ---------- buttons ---------- */
 
   .btn {
-    appearance: none;
-    width: 100%;
-    border: 0;
-    border-radius: var(--r-sm);
-    padding: 13px 16px;
-    font: inherit;
-    font-weight: 500;
-    cursor: pointer;
-    color: #fff;
-    background: var(--accent);
+    appearance: none; width: 100%; border: 0;
+    border-radius: var(--r-sm); padding: 13px 16px;
+    font: inherit; font-weight: 500; cursor: pointer;
+    color: #fff; background: var(--accent);
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.22);
     transition: transform 160ms var(--ease), filter 160ms var(--ease);
   }
@@ -376,8 +334,7 @@
   .btn:active { transform: translateY(0) scale(0.985); }
 
   .btn.ghost {
-    color: var(--ink);
-    background: var(--glass);
+    color: var(--ink); background: var(--glass);
     box-shadow: inset 0 1px 0 0 var(--glass-spec), inset 0 0 0 1px var(--glass-rim);
     backdrop-filter: blur(var(--blur)) saturate(180%);
     -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
@@ -385,88 +342,124 @@
 
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 12px; }
 
-  /* ---------- cards ---------- */
+  /* ---------- today floor meter ---------- */
 
-  .card { padding: 18px; }
+  .floor-wrap { margin-top: 14px; }
 
-  .card h3 {
-    font-size: var(--step-1);
-    font-weight: 600;
-    margin: 0 0 12px;
+  .floor {
+    position: relative;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--hairline);
+    overflow: hidden;
+  }
+  .floor i {
+    display: block; height: 100%; border-radius: 999px;
+    background: var(--accent);
+    transition: width 700ms var(--ease);
+  }
+  /* the notch marks the smallest day that still counts */
+  .floor u {
+    position: absolute; top: -3px; bottom: -3px; width: 2px;
+    background: var(--ground);
+    box-shadow: 0 0 0 1px var(--glass-rim);
   }
 
-  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-  .stat-n {
-    font-family: "Newsreader", Georgia, serif;
-    font-size: var(--step-4);
-    font-weight: 400;
-    font-variant-numeric: tabular-nums;
-    line-height: 1.1;
-    margin: 7px 0 2px;
+  .floor-legend {
+    display: flex; justify-content: space-between; gap: 10px;
+    margin-top: 8px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: var(--step-0); color: var(--ink-3);
   }
-  .stat-l { font-size: var(--step-0); color: var(--ink-3); margin: 0; }
 
-  .rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .rows { list-style: none; margin: 0; padding: 0; }
   .rows li {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 10px;
-    font-size: var(--step-1);
-    color: var(--ink-2);
-    padding-block: 9px;
-    border-bottom: 1px solid var(--hairline);
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 10px; font-size: var(--step-1); color: var(--ink-2);
+    padding-block: 9px; border-bottom: 1px solid var(--hairline);
   }
   .rows li:last-child { border-bottom: none; }
   .rows .n {
     font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: var(--step-0);
-    color: var(--ink-3);
+    font-size: var(--step-0); color: var(--ink-3);
     font-variant-numeric: tabular-nums;
   }
 
-  /* ---------- progress ---------- */
+  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .stat-n {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: var(--step-4); font-weight: 400;
+    font-variant-numeric: tabular-nums; line-height: 1.1;
+    margin: 7px 0 2px;
+  }
+  .stat-l { font-size: var(--step-0); color: var(--ink-3); margin: 0; }
+
+  /* ---------- consistency grid ---------- */
+
+  .grid-scroll { overflow-x: auto; scrollbar-width: none; margin-top: 4px; }
+  .grid-scroll::-webkit-scrollbar { display: none; }
+
+  .grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(7, 13px);
+    gap: 3px;
+    min-width: max-content;
+  }
+  .cell {
+    width: 13px; height: 13px; border-radius: 3.5px;
+    background: var(--h0);
+  }
+  .cell[data-lvl="1"] { background: var(--h1); }
+  .cell[data-lvl="2"] { background: var(--h2); }
+  .cell[data-lvl="3"] { background: var(--h3); }
+  .cell[data-lvl="4"] { background: var(--h4); }
+  .cell[data-lvl="5"] { background: var(--h5); }
+  .cell.today { box-shadow: 0 0 0 1.5px var(--ink-3); }
+
+  .ramp { display: flex; align-items: center; gap: 4px; }
+  .ramp .cell { width: 11px; height: 11px; }
+
+  .grid-foot {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 12px; margin-top: 12px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: var(--step-0); color: var(--ink-3);
+  }
+
+  .consistency {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: var(--step-4); font-weight: 400;
+    font-variant-numeric: tabular-nums; margin: 6px 0 0;
+    color: var(--ink);
+  }
 
   .topic { padding-block: 14px; border-bottom: 1px solid var(--hairline); }
   .topic:last-of-type { border-bottom: none; }
-
-  .topic-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-  }
+  .topic-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
   .topic-name { font-size: var(--step-1); font-weight: 500; margin: 0; }
-
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: var(--step-0);
-    color: var(--ink-2);
-    white-space: nowrap;
-  }
-
   .spark { margin-top: 8px; }
   .spark svg { display: block; width: 100%; height: 40px; overflow: visible; }
 
   .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 4px; }
-
   .chart-wrap { margin-top: 4px; }
   .chart-wrap svg { display: block; width: 100%; height: 150px; overflow: visible; }
 
-  /* ---------- practice overlay ---------- */
+  .quiet {
+    font-size: var(--step-0);
+    color: var(--ink-3);
+    margin: 10px 0 0;
+    padding-top: 10px;
+    border-top: 1px solid var(--hairline);
+  }
+
+  /* ---------- practice sheet ---------- */
 
   .sheet {
-    position: fixed;
-    inset: 0;
-    z-index: 20;
-    display: grid;
-    grid-template-rows: 1fr;
+    position: fixed; inset: 0; z-index: 20;
     background: var(--ground);
     animation: sheet-in 340ms var(--ease) both;
+    overflow-y: auto;
   }
   @keyframes sheet-in {
     from { opacity: 0; transform: scale(1.015); }
@@ -474,81 +467,51 @@
   }
 
   .sheet-inner {
-    max-width: 440px;
-    width: 100%;
-    margin: 0 auto;
+    max-width: 440px; width: 100%; margin: 0 auto;
+    min-height: 100%;
     padding: calc(18px + env(safe-area-inset-top, 0px)) 18px calc(18px + env(safe-area-inset-bottom, 0px));
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    min-height: 0;
+    display: flex; flex-direction: column; gap: 18px;
   }
 
   .sheet-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-
   .close {
-    appearance: none;
-    border: 0;
-    background: transparent;
-    color: var(--ink-3);
-    font: inherit;
-    font-size: var(--step-1);
-    cursor: pointer;
-    padding: 4px 2px;
+    appearance: none; border: 0; background: transparent;
+    color: var(--ink-3); font: inherit; font-size: var(--step-1);
+    cursor: pointer; padding: 4px 2px;
   }
 
   .prompt {
     font-family: "Newsreader", Georgia, serif;
-    font-size: var(--step-5);
-    font-weight: 300;
-    line-height: 1.22;
-    letter-spacing: -0.012em;
-    text-wrap: balance;
-    margin: 0;
+    font-size: var(--step-5); font-weight: 300;
+    line-height: 1.22; letter-spacing: -0.012em;
+    text-wrap: balance; margin: 0;
   }
 
-  .answer-block { margin-top: auto; display: flex; flex-direction: column; gap: 14px; animation: fade-rise 380ms var(--ease) both; }
-
+  .answer-block {
+    margin-top: auto; display: flex; flex-direction: column; gap: 14px;
+    animation: fade-rise 380ms var(--ease) both;
+  }
   .answer {
     font-family: "Newsreader", Georgia, serif;
-    font-size: var(--step-3);
-    line-height: 1.46;
-    margin: 0;
-    padding-top: 14px;
-    border-top: 1px solid var(--hairline);
+    font-size: var(--step-3); line-height: 1.46; margin: 0;
+    padding-top: 14px; border-top: 1px solid var(--hairline);
   }
-
   .source {
-    font-size: var(--step-1);
-    color: var(--ink-2);
-    border-left: 2px solid var(--accent);
-    padding-left: 12px;
-    margin: 0;
+    font-size: var(--step-1); color: var(--ink-2);
+    border-left: 2px solid var(--accent); padding-left: 12px; margin: 0;
   }
   .source cite {
-    display: block;
-    font-style: normal;
+    display: block; font-style: normal;
     font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: var(--step-0);
-    color: var(--ink-3);
-    margin-top: 5px;
+    font-size: var(--step-0); color: var(--ink-3); margin-top: 5px;
   }
 
   .grades { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
   .grade {
-    appearance: none;
-    border: 0;
-    border-radius: var(--r-sm);
-    padding: 11px 4px 9px;
-    font: inherit;
-    font-size: var(--step-1);
-    font-weight: 500;
-    color: var(--ink);
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
+    appearance: none; border: 0; border-radius: var(--r-sm);
+    padding: 11px 4px 9px; font: inherit; font-size: var(--step-1);
+    font-weight: 500; color: var(--ink); cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
     background: var(--glass);
     backdrop-filter: blur(var(--blur)) saturate(180%);
     -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
@@ -558,8 +521,7 @@
   .grade:hover { transform: translateY(-2px); }
   .grade .when {
     font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 0.6875rem;
-    color: var(--ink-3);
+    font-size: 0.6875rem; color: var(--ink-3);
     font-variant-numeric: tabular-nums;
   }
 
@@ -568,9 +530,7 @@
   /* ---------- nav ---------- */
 
   .nav {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
     padding: 5px;
     margin-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
     border-radius: 18px;
@@ -582,18 +542,10 @@
       inset 0 0 0 1px var(--glass-rim),
       var(--glass-shadow);
   }
-
   .nav button {
-    appearance: none;
-    border: 0;
-    background: transparent;
-    color: var(--ink-3);
-    font: inherit;
-    font-size: var(--step-1);
-    font-weight: 500;
-    padding: 9px 4px;
-    border-radius: 13px;
-    cursor: pointer;
+    appearance: none; border: 0; background: transparent;
+    color: var(--ink-3); font: inherit; font-size: var(--step-1);
+    font-weight: 500; padding: 9px 4px; border-radius: 13px; cursor: pointer;
     transition: color 200ms var(--ease), background 200ms var(--ease);
   }
   .nav button[aria-selected="true"] { color: var(--ink); background: var(--accent-soft); }
@@ -624,7 +576,7 @@
     target: "14 March",
     weeksLeft: 5,
     percent: 46,
-    pace: "on track"
+    replans: 2
   };
 
   const MODULES = [
@@ -632,9 +584,9 @@
     { n: 2, name: "Autograd and backpropagation", state: "done", detail: "mastered · 18 concepts" },
     { n: 3, name: "The attention mechanism", state: "now", detail: "4 of 7 concepts solid",
       task: "Derive why scaled dot-product attention divides by the square root of the key dimension — then check it against the paper.",
-      minutes: 14, due: 5 },
+      minutes: 14 },
     { n: 4, name: "Multi-head and positional encoding", state: "next", detail: "opens when module 3 is solid" },
-    { n: 5, name: "Training loop and optimisation", state: "locked", detail: "9 concepts" },
+    { n: 5, name: "Training loop and optimisation", state: "optional", detail: "made optional · plan adjusted" },
     { n: 6, name: "Build it end to end", state: "locked", detail: "capstone" }
   ];
 
@@ -655,13 +607,13 @@
       source: "the queries come from the previous decoder layer, and the memory keys and values come from the output of the encoder",
       cite: "Attention Is All You Need · §3.2.3" },
     { topic: "Attention", type: "application",
-      prompt: "You mask the upper triangle of the attention score matrix before the softmax rather than after. Why does the order matter?",
-      answer: "Masking after the softmax leaves the masked positions having already contributed to the normalisation, so the remaining weights no longer sum to one. Masking before, with negative infinity, removes them from the sum entirely.",
+      prompt: "You mask the upper triangle of the attention score matrix after the softmax rather than before. What goes wrong?",
+      answer: "The masked positions have already contributed to the normalisation, so the surviving weights no longer sum to one. Masking before the softmax with negative infinity removes them from the sum entirely.",
       source: "we implement this inside of scaled dot-product attention by masking out all values in the input of the softmax",
       cite: "Attention Is All You Need · §3.2.3" },
     { topic: "Attention", type: "explanation",
-      prompt: "Why does a transformer need positional encoding at all, when an RNN does not?",
-      answer: "Attention is permutation-equivariant — shuffle the input tokens and the output shuffles identically, with no change in content. An RNN gets order for free from the sequence of its recurrence; attention has to be told.",
+      prompt: "Why does a transformer need positional encoding when an RNN does not?",
+      answer: "Attention is permutation-equivariant — shuffle the input tokens and the output shuffles identically, with no change in content. An RNN gets order for free from its recurrence; attention has to be told.",
       source: "since our model contains no recurrence and no convolution, we must inject some information about the relative or absolute position of the tokens",
       cite: "Attention Is All You Need · §3.5" }
   ];
@@ -673,16 +625,33 @@
     { name: "Optimisation", status: "weak", retention: 34, trace: [52, 55, 50, 46, 49, 43, 40, 42, 37, 39, 35, 38, 33, 34] }
   ];
 
-  // Cumulative progress against the pace the deadline requires.
   const PACE_ACTUAL = [0, 6, 13, 19, 24, 32, 37, 41, 46];
   const PACE_TARGET = [0, 5, 11, 16, 22, 27, 33, 38, 44];
 
   const STATUS_LABEL = { solid: "Solid", slipping: "Slipping", weak: "Needs work" };
 
+  // Today's work. The floor is the smallest day that still counts — reachable
+  // when you are exhausted, so consistency never depends on a good day.
+  const TODAY = { done: 3, floor: 5, full: 12 };
+
+  /* Consistency history: level 0-5 per day, set by how much was retained that
+     day rather than whether the app was opened. 18 weeks, most recent last. */
+  const HISTORY = (() => {
+    const seed = [
+      0,0,2,3,1,0,0, 2,3,4,3,0,1,0, 3,4,4,5,3,0,2, 4,5,4,3,4,0,0,
+      3,4,5,4,3,2,0, 0,0,1,2,0,0,0, 2,3,3,4,2,0,1, 4,5,5,4,4,2,0,
+      3,4,4,5,3,0,0, 4,5,5,5,4,3,2, 2,3,4,3,0,0,0, 0,1,2,3,2,0,0,
+      3,4,5,4,4,0,1, 4,5,4,5,3,2,0, 2,4,4,3,3,0,0, 3,5,5,4,4,3,1,
+      4,4,5,5,3,0,0, 3,4,5,4,0,0,0
+    ];
+    return seed;
+  })();
+
   let view = "path";
   let index = 0;
   let revealed = false;
   let graded = 0;
+  let inSheet = false;
 
   const screen = document.getElementById("screen");
   const overlay = document.getElementById("overlay");
@@ -690,6 +659,9 @@
 
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  /* Rolling window, not a chain: one missed day costs one, never everything. */
+  const activeInLast = (n) => HISTORY.slice(-n).filter((v) => v > 0).length;
 
   /* ---------- charts ---------- */
 
@@ -706,7 +678,7 @@
     const id = "sg-" + status;
 
     return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img"
-        aria-label="Recall over the last 14 reviews, ending at ${trace[trace.length - 1]} percent">
+        aria-label="Recall across the last 14 reviews, ending at ${trace[trace.length - 1]} percent">
       <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stop-color="var(--${status})" stop-opacity="0.2"/>
         <stop offset="100%" stop-color="var(--${status})" stop-opacity="0"/>
@@ -732,13 +704,14 @@
          font-family="IBM Plex Mono, monospace" font-size="10">${v}%</text>`).join("");
 
     const weeks = [0, 4, 8].map((i) =>
-      `<text x="${x(i)}" y="${H - 6}" fill="var(--ink-3)" text-anchor="${i === 0 ? "start" : i === 8 ? "end" : "middle"}"
+      `<text x="${x(i)}" y="${H - 6}" fill="var(--ink-3)"
+        text-anchor="${i === 0 ? "start" : i === 8 ? "end" : "middle"}"
         font-family="IBM Plex Mono, monospace" font-size="10">wk ${i + 1}</text>`).join("");
 
     const lastI = PACE_ACTUAL.length - 1;
 
     return `<svg viewBox="0 0 ${W} ${H}" role="img"
-        aria-label="Cumulative progress by week, currently 46 percent against a required pace of 44 percent">
+        aria-label="Cumulative progress by week, now 46 percent against a required pace of 44 percent">
       ${grid}${weeks}
       <path d="${path(PACE_TARGET)}" fill="none" stroke="var(--ink-3)" stroke-width="1.5"
         stroke-dasharray="4 4" stroke-linecap="round"/>
@@ -749,15 +722,32 @@
     </svg>`;
   }
 
+  function consistencyGrid() {
+    const cells = HISTORY.map((lvl, i) => {
+      const today = i === HISTORY.length - 1 ? " today" : "";
+      return `<span class="cell${today}" data-lvl="${lvl}"></span>`;
+    }).join("");
+
+    const ramp = [0, 1, 2, 3, 4, 5]
+      .map((l) => `<span class="cell" data-lvl="${l}"></span>`).join("");
+
+    return `<div class="grid-scroll"><div class="grid" role="img"
+      aria-label="Daily study over the last 18 weeks, shaded by how much was retained each day">${cells}</div></div>
+      <div class="grid-foot">
+        <span>18 weeks</span>
+        <span class="ramp">less ${ramp} more</span>
+      </div>`;
+  }
+
   /* ---------- views ---------- */
 
   function pathView() {
     const nodes = MODULES.map((m) => {
-      const mark = m.state === "done" ? "✓" : m.n;
+      const mark = m.state === "done" ? "✓" : m.state === "optional" ? "·" : m.n;
       const open = m.state === "now" ? `
         <div class="now-card">
           <p class="eyebrow">Next</p>
-          <p class="task">${esc(m.task)}</p>
+          <p class="serif-lead">${esc(m.task)}</p>
           <button class="btn" id="start">Start · ${m.minutes} min</button>
         </div>` : "";
 
@@ -778,38 +768,53 @@
         <div class="bar"><i style="width:${GOAL.percent}%"></i></div>
         <div class="goal-foot">
           <span class="pct">${GOAL.percent}%</span>
-          <span class="pace"><span class="dot" style="background:var(--solid)"></span>${esc(GOAL.pace)} for ${esc(GOAL.target)}</span>
+          <span class="chip"><span class="dot" style="background:var(--solid)"></span>on pace for ${esc(GOAL.target)}</span>
         </div>
       </section>
       <section class="glass card path">${nodes}</section>
-      <p class="note">Sample plan — built from a paper and a lecture series.</p>
+      <p class="note">Sample plan — generated from a paper and a lecture series.</p>
     </div>`;
   }
 
   function todayView() {
     const due = DECK.length - index;
+    const done = Math.min(TODAY.done + graded, TODAY.full);
+    const metFloor = done >= TODAY.floor;
+
     return `<div class="stack fade">
       <section class="glass card">
         <p class="eyebrow">Today</p>
-        <p class="task" style="font-family:Newsreader,Georgia,serif;font-size:var(--step-4);font-weight:300;line-height:1.24;margin:8px 0 16px;text-wrap:balance">
+        <p class="serif-lead" style="font-size:var(--step-4);font-weight:300;line-height:1.24;margin:8px 0 0">
           Finish the attention derivation, then clear ${due} reviews.
         </p>
-        <button class="btn" id="start">Start · 14 min</button>
+        <div class="floor-wrap">
+          <div class="floor">
+            <i style="width:${(done / TODAY.full) * 100}%"></i>
+            <u style="left:${(TODAY.floor / TODAY.full) * 100}%"></u>
+          </div>
+          <div class="floor-legend">
+            <span>${done} of ${TODAY.full} done</span>
+            <span>${metFloor ? "day counted" : `${TODAY.floor - done} more to count the day`}</span>
+          </div>
+        </div>
+        <div style="margin-top:16px"><button class="btn" id="start">Start · ${MODULES[2].minutes} min</button></div>
       </section>
+
       <div class="duo">
+        <div class="glass card">
+          <p class="eyebrow">Last 30 days</p>
+          <p class="stat-n">${activeInLast(30)}<span style="font-size:var(--step-2);color:var(--ink-3)"> / 30</span></p>
+          <p class="stat-l">days studied</p>
+        </div>
         <div class="glass card">
           <p class="eyebrow">Reviews</p>
           <p class="stat-n">${due}</p>
           <p class="stat-l">due now</p>
         </div>
-        <div class="glass card">
-          <p class="eyebrow">Done</p>
-          <p class="stat-n">${graded}</p>
-          <p class="stat-l">today</p>
-        </div>
       </div>
+
       <section class="glass card">
-        <h3>This week</h3>
+        <h3 class="eyebrow" style="margin-bottom:6px">This week</h3>
         <ul class="rows">
           <li><span>Finish module 3</span><span class="n">3 concepts</span></li>
           <li><span>Re-read §3.2 of the paper</span><span class="n">20 min</span></li>
@@ -834,19 +839,27 @@
 
     return `<div class="stack fade">
       <section class="glass card">
-        <h3>Pace toward ${esc(GOAL.target)}</h3>
+        <p class="eyebrow">Consistency</p>
+        <p class="consistency">${activeInLast(30)} of the last 30 days</p>
+        <p class="stat-l" style="margin-top:4px">Shaded by what stayed with you, not by time spent.</p>
+        ${consistencyGrid()}
+      </section>
+
+      <section class="glass card">
+        <h3 class="eyebrow" style="margin-bottom:10px">Pace toward ${esc(GOAL.target)}</h3>
         <div class="legend">
           <span class="chip"><span class="dot" style="background:var(--accent)"></span>You · ${GOAL.percent}%</span>
-          <span class="chip"><span class="dot" style="background:var(--ink-3)"></span>Required pace · 44%</span>
+          <span class="chip"><span class="dot" style="background:var(--ink-3)"></span>Needed · 44%</span>
         </div>
         <div class="chart-wrap">${paceChart()}</div>
+        <p class="quiet">Plan adjusted ${GOAL.replans} times to hold ${esc(GOAL.target)} — module 5 is now optional.</p>
       </section>
+
       <section class="glass card">
-        <h3>What you would recall today</h3>
+        <h3 class="eyebrow" style="margin-bottom:10px">What you would recall today</h3>
         <div class="legend">${legend}</div>
         ${topics}
       </section>
-      <p class="note">Traces show recall at each review, not time spent.</p>
     </div>`;
   }
 
@@ -898,8 +911,6 @@
 
   /* ---------- render ---------- */
 
-  let inSheet = false;
-
   function renderSheet() {
     overlay.innerHTML = inSheet ? sheet() : "";
     if (!inSheet) return;
@@ -917,7 +928,7 @@
       : view === "today" ? todayView() : progressView();
 
     meta.textContent = view === "progress"
-      ? `${GOAL.percent}% of goal`
+      ? `${activeInLast(30)} of 30 days`
       : `${DECK.length - index} due · ${GOAL.weeksLeft} wks left`;
 
     screen.querySelector("#start")?.addEventListener("click", () => {
