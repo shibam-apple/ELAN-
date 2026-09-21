@@ -1,90 +1,103 @@
 <title>Elan Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200;0,6..72,300;0,6..72,400;0,6..72,500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 
 <style>
   :root {
-    /* Light: a cool, jade-biased paper rather than a neutral or cream grey. */
-    --ground: #EDF1EF;
+    --ground: #E9EEEC;
+    --ground-2: #DFE7E4;
     --surface: #FBFDFC;
-    --glass: rgba(255, 255, 255, 0.62);
-    --glass-edge: rgba(14, 40, 34, 0.10);
-    --glass-sheen: rgba(255, 255, 255, 0.85);
 
-    --ink: #0F1A17;
-    --ink-2: #405049;
-    --ink-3: #6B7C74;
-    --hairline: rgba(15, 26, 23, 0.10);
+    /* Liquid glass: a translucent layer, a bright specular top edge, and a
+       faint inner rim. The three together are what read as material. */
+    --glass: rgba(255, 255, 255, 0.58);
+    --glass-strong: rgba(255, 255, 255, 0.74);
+    --glass-rim: rgba(11, 38, 32, 0.09);
+    --glass-spec: rgba(255, 255, 255, 0.95);
+    --glass-shadow: 0 1px 2px rgba(10, 30, 26, 0.05), 0 14px 38px rgba(10, 30, 26, 0.10);
+
+    --ink: #0D1816;
+    --ink-2: #3C4E48;
+    --ink-3: #6C7E77;
+    --hairline: rgba(13, 24, 22, 0.09);
 
     --accent: #0E8A6C;
-    --accent-soft: rgba(14, 138, 108, 0.12);
+    --accent-soft: rgba(14, 138, 108, 0.13);
+    --accent-line: rgba(14, 138, 108, 0.28);
 
-    /* Status ramp — validated: lightness band, chroma, CVD + normal-vision
-       separation, and contrast all pass against this surface. */
     --solid: #0E8A6C;
     --slipping: #A67A08;
     --weak: #C22B52;
 
-    --shadow-lift: 0 1px 2px rgba(15, 26, 23, 0.05), 0 8px 24px rgba(15, 26, 23, 0.07);
-    --blur: 20px;
+    --r-lg: 28px;
+    --r-md: 20px;
+    --r-sm: 14px;
+    --blur: 30px;
 
     --step-0: 0.75rem;
     --step-1: 0.875rem;
     --step-2: 1rem;
-    --step-3: 1.25rem;
-    --step-4: 1.75rem;
-    --step-5: 2.25rem;
+    --step-3: 1.125rem;
+    --step-4: 1.5rem;
+    --step-5: 2rem;
+
+    --ease: cubic-bezier(0.32, 0.72, 0.28, 1);
   }
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --ground: #080D0C;
-      --surface: #0E1514;
-      --glass: rgba(255, 255, 255, 0.055);
-      --glass-edge: rgba(255, 255, 255, 0.10);
-      --glass-sheen: rgba(255, 255, 255, 0.14);
+      --ground: #070C0B;
+      --ground-2: #0C1413;
+      --surface: #101817;
 
-      --ink: #E8EFEC;
-      --ink-2: #A4B3AD;
-      --ink-3: #6E807A;
-      --hairline: rgba(255, 255, 255, 0.09);
+      --glass: rgba(255, 255, 255, 0.055);
+      --glass-strong: rgba(255, 255, 255, 0.09);
+      --glass-rim: rgba(255, 255, 255, 0.10);
+      --glass-spec: rgba(255, 255, 255, 0.30);
+      --glass-shadow: 0 1px 2px rgba(0, 0, 0, 0.55), 0 16px 44px rgba(0, 0, 0, 0.5);
+
+      --ink: #E9F0ED;
+      --ink-2: #A3B2AC;
+      --ink-3: #6D7F79;
+      --hairline: rgba(255, 255, 255, 0.085);
 
       --accent: #2F9A7E;
       --accent-soft: rgba(47, 154, 126, 0.16);
+      --accent-line: rgba(47, 154, 126, 0.36);
 
       --solid: #2F9A7E;
       --slipping: #B08C2B;
       --weak: #C44B4C;
-
-      --shadow-lift: 0 1px 2px rgba(0, 0, 0, 0.5), 0 12px 32px rgba(0, 0, 0, 0.45);
     }
   }
 
   :root[data-theme="dark"] {
-    --ground: #080D0C;
-    --surface: #0E1514;
-    --glass: rgba(255, 255, 255, 0.055);
-    --glass-edge: rgba(255, 255, 255, 0.10);
-    --glass-sheen: rgba(255, 255, 255, 0.14);
+    --ground: #070C0B;
+    --ground-2: #0C1413;
+    --surface: #101817;
 
-    --ink: #E8EFEC;
-    --ink-2: #A4B3AD;
-    --ink-3: #6E807A;
-    --hairline: rgba(255, 255, 255, 0.09);
+    --glass: rgba(255, 255, 255, 0.055);
+    --glass-strong: rgba(255, 255, 255, 0.09);
+    --glass-rim: rgba(255, 255, 255, 0.10);
+    --glass-spec: rgba(255, 255, 255, 0.30);
+    --glass-shadow: 0 1px 2px rgba(0, 0, 0, 0.55), 0 16px 44px rgba(0, 0, 0, 0.5);
+
+    --ink: #E9F0ED;
+    --ink-2: #A3B2AC;
+    --ink-3: #6D7F79;
+    --hairline: rgba(255, 255, 255, 0.085);
 
     --accent: #2F9A7E;
     --accent-soft: rgba(47, 154, 126, 0.16);
+    --accent-line: rgba(47, 154, 126, 0.36);
 
     --solid: #2F9A7E;
     --slipping: #B08C2B;
     --weak: #C44B4C;
-
-    --shadow-lift: 0 1px 2px rgba(0, 0, 0, 0.5), 0 12px 32px rgba(0, 0, 0, 0.45);
   }
 
   * { box-sizing: border-box; }
-
   html, body { height: 100%; }
 
   body {
@@ -97,25 +110,39 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Ambient warmth behind the glass — a desk lamp, not a gradient hero. */
+  /* Glass needs something behind it to refract, or it reads as flat grey. */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(60% 40% at 82% 4%, var(--accent-soft), transparent 70%),
-      radial-gradient(50% 35% at 10% 96%, var(--accent-soft), transparent 72%);
+      radial-gradient(58% 34% at 84% 2%, var(--accent-soft), transparent 68%),
+      radial-gradient(48% 30% at 6% 62%, var(--accent-soft), transparent 70%),
+      linear-gradient(180deg, transparent 40%, var(--ground-2) 100%);
   }
 
   .app {
     position: relative;
     height: 100%;
-    max-width: 430px;
+    max-width: 440px;
     margin: 0 auto;
     display: grid;
     grid-template-rows: auto minmax(0, 1fr) auto;
-    padding-inline: 20px;
+    padding-inline: 18px;
+  }
+
+  /* ---------- glass primitive ---------- */
+
+  .glass {
+    background: var(--glass);
+    backdrop-filter: blur(var(--blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
+    border-radius: var(--r-md);
+    box-shadow:
+      inset 0 1px 0 0 var(--glass-spec),
+      inset 0 0 0 1px var(--glass-rim),
+      var(--glass-shadow);
   }
 
   /* ---------- top bar ---------- */
@@ -125,116 +152,367 @@
     align-items: baseline;
     justify-content: space-between;
     gap: 12px;
-    padding-block: 18px 10px;
+    padding-block: 16px 12px;
   }
 
   .wordmark {
     font-family: "Newsreader", Georgia, serif;
     font-size: var(--step-3);
     font-weight: 500;
-    letter-spacing: 0.01em;
     margin: 0;
+    letter-spacing: 0.01em;
   }
-
   .wordmark span { color: var(--accent); }
 
-  .session-meta {
+  .meta {
     font-family: "IBM Plex Mono", ui-monospace, monospace;
     font-size: var(--step-0);
     color: var(--ink-3);
     font-variant-numeric: tabular-nums;
   }
 
-  /* ---------- screens ---------- */
+  /* ---------- screens + fades ---------- */
 
   .screen {
     min-height: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-width: none;
-    padding-block: 4px 16px;
+    padding-block: 2px 14px;
   }
-
   .screen::-webkit-scrollbar { display: none; }
 
-  /* ---------- practice: deliberately the flattest screen in the app ---------- */
+  .fade > * {
+    animation: fade-rise 420ms var(--ease) both;
+  }
+  .fade > *:nth-child(2) { animation-delay: 55ms; }
+  .fade > *:nth-child(3) { animation-delay: 110ms; }
+  .fade > *:nth-child(4) { animation-delay: 165ms; }
+  .fade > *:nth-child(5) { animation-delay: 210ms; }
 
-  .practice {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    height: 100%;
+  @keyframes fade-rise {
+    from { opacity: 0; transform: translateY(10px) scale(0.985); }
+    to { opacity: 1; transform: none; }
   }
 
-  .q-head {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
+  @media (prefers-reduced-motion: reduce) {
+    .fade > * { animation: none !important; }
+    * { transition-duration: 0.01ms !important; }
   }
+
+  .stack { display: flex; flex-direction: column; gap: 14px; }
+
+  /* ---------- goal ---------- */
+
+  .goal { padding: 20px; }
 
   .eyebrow {
     font-family: "IBM Plex Mono", ui-monospace, monospace;
     font-size: var(--step-0);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
     color: var(--ink-3);
+    margin: 0;
   }
 
-  .qtype {
+  .goal h2 {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: var(--step-5);
+    font-weight: 300;
+    line-height: 1.16;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    margin: 8px 0 14px;
+  }
+
+  .bar {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--hairline);
+    overflow: hidden;
+  }
+  .bar i {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--accent);
+    transition: width 700ms var(--ease);
+  }
+
+  .goal-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .pct {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: var(--step-4);
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pace {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-family: "IBM Plex Mono", ui-monospace, monospace;
     font-size: var(--step-0);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+
+  /* ---------- path ---------- */
+
+  .path { padding: 4px 2px; }
+
+  .node {
+    position: relative;
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    gap: 0 12px;
+    padding-block: 14px;
+  }
+
+  /* connector drawn behind the markers, stopping at the last node */
+  .node::before {
+    content: "";
+    position: absolute;
+    left: 12px;
+    top: 0;
+    bottom: 0;
+    width: 1.5px;
+    background: var(--hairline);
+  }
+  .node:first-child::before { top: 50%; }
+  .node:last-child::before { bottom: 50%; }
+  .node.done::before { background: var(--accent-line); }
+
+  .marker {
+    position: relative;
+    z-index: 1;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--ground);
+    box-shadow: inset 0 0 0 1.5px var(--hairline);
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.6875rem;
+    color: var(--ink-3);
+    align-self: center;
+  }
+  .node.done .marker {
+    background: var(--accent);
+    box-shadow: none;
+    color: #fff;
+  }
+  .node.now .marker {
+    box-shadow: inset 0 0 0 2px var(--accent), 0 0 0 5px var(--accent-soft);
     color: var(--accent);
-    border: 1px solid var(--accent-soft);
-    background: var(--accent-soft);
-    border-radius: 999px;
-    padding: 2px 9px;
+  }
+
+  .node-body { min-width: 0; align-self: center; }
+
+  .node-name {
+    font-size: var(--step-2);
+    font-weight: 500;
+    margin: 0;
+    color: var(--ink);
+  }
+  .node.locked .node-name { color: var(--ink-3); font-weight: 400; }
+
+  .node-sub {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: var(--step-0);
+    color: var(--ink-3);
+    margin: 3px 0 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* the current module opens into the one thing to do next */
+  .now-card {
+    grid-column: 2;
+    margin-top: 12px;
+    padding: 16px;
+    border-radius: var(--r-md);
+    background: var(--glass-strong);
+    backdrop-filter: blur(var(--blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
+    box-shadow:
+      inset 0 1px 0 0 var(--glass-spec),
+      inset 0 0 0 1px var(--glass-rim),
+      var(--glass-shadow);
+  }
+
+  .now-card p.task {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: var(--step-3);
+    line-height: 1.34;
+    margin: 6px 0 14px;
+    text-wrap: balance;
+  }
+
+  /* ---------- buttons ---------- */
+
+  .btn {
+    appearance: none;
+    width: 100%;
+    border: 0;
+    border-radius: var(--r-sm);
+    padding: 13px 16px;
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    color: #fff;
+    background: var(--accent);
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.22);
+    transition: transform 160ms var(--ease), filter 160ms var(--ease);
+  }
+  .btn:hover { transform: translateY(-1px); filter: brightness(1.06); }
+  .btn:active { transform: translateY(0) scale(0.985); }
+
+  .btn.ghost {
+    color: var(--ink);
+    background: var(--glass);
+    box-shadow: inset 0 1px 0 0 var(--glass-spec), inset 0 0 0 1px var(--glass-rim);
+    backdrop-filter: blur(var(--blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
+  }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 12px; }
+
+  /* ---------- cards ---------- */
+
+  .card { padding: 18px; }
+
+  .card h3 {
+    font-size: var(--step-1);
+    font-weight: 600;
+    margin: 0 0 12px;
+  }
+
+  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  .stat-n {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: var(--step-4);
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+    margin: 7px 0 2px;
+  }
+  .stat-l { font-size: var(--step-0); color: var(--ink-3); margin: 0; }
+
+  .rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .rows li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: var(--step-1);
+    color: var(--ink-2);
+    padding-block: 9px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .rows li:last-child { border-bottom: none; }
+  .rows .n {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: var(--step-0);
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- progress ---------- */
+
+  .topic { padding-block: 14px; border-bottom: 1px solid var(--hairline); }
+  .topic:last-of-type { border-bottom: none; }
+
+  .topic-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .topic-name { font-size: var(--step-1); font-weight: 500; margin: 0; }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: var(--step-0);
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+
+  .spark { margin-top: 8px; }
+  .spark svg { display: block; width: 100%; height: 40px; overflow: visible; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 4px; }
+
+  .chart-wrap { margin-top: 4px; }
+  .chart-wrap svg { display: block; width: 100%; height: 150px; overflow: visible; }
+
+  /* ---------- practice overlay ---------- */
+
+  .sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: grid;
+    grid-template-rows: 1fr;
+    background: var(--ground);
+    animation: sheet-in 340ms var(--ease) both;
+  }
+  @keyframes sheet-in {
+    from { opacity: 0; transform: scale(1.015); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .sheet-inner {
+    max-width: 440px;
+    width: 100%;
+    margin: 0 auto;
+    padding: calc(18px + env(safe-area-inset-top, 0px)) 18px calc(18px + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-height: 0;
+  }
+
+  .sheet-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+  .close {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--ink-3);
+    font: inherit;
+    font-size: var(--step-1);
+    cursor: pointer;
+    padding: 4px 2px;
   }
 
   .prompt {
     font-family: "Newsreader", Georgia, serif;
     font-size: var(--step-5);
-    font-weight: 400;
-    line-height: 1.24;
-    letter-spacing: -0.01em;
+    font-weight: 300;
+    line-height: 1.22;
+    letter-spacing: -0.012em;
     text-wrap: balance;
     margin: 0;
-    color: var(--ink);
   }
 
-  .reveal-hint {
-    margin-top: auto;
-    text-align: center;
-    color: var(--ink-3);
-    font-size: var(--step-1);
-    padding-block: 8px;
-  }
-
-  .answer-block {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    margin-top: auto;
-    animation: rise 260ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
-  }
-
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: none; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .answer-block, .tile, .topic { animation: none !important; }
-    * { transition-duration: 0.01ms !important; }
-  }
+  .answer-block { margin-top: auto; display: flex; flex-direction: column; gap: 14px; animation: fade-rise 380ms var(--ease) both; }
 
   .answer {
     font-family: "Newsreader", Georgia, serif;
     font-size: var(--step-3);
     line-height: 1.46;
-    color: var(--ink);
     margin: 0;
     padding-top: 14px;
     border-top: 1px solid var(--hairline);
@@ -244,50 +522,40 @@
     font-size: var(--step-1);
     color: var(--ink-2);
     border-left: 2px solid var(--accent);
-    padding: 2px 0 2px 12px;
+    padding-left: 12px;
     margin: 0;
   }
-
   .source cite {
     display: block;
     font-style: normal;
     font-family: "IBM Plex Mono", ui-monospace, monospace;
     font-size: var(--step-0);
     color: var(--ink-3);
-    margin-top: 6px;
+    margin-top: 5px;
   }
 
-  /* ---------- controls ---------- */
-
-  .grades {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-  }
-
+  .grades { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
   .grade {
     appearance: none;
-    border: 1px solid var(--glass-edge);
-    background: var(--glass);
-    backdrop-filter: blur(var(--blur)) saturate(1.4);
-    -webkit-backdrop-filter: blur(var(--blur)) saturate(1.4);
-    color: var(--ink);
-    border-radius: 13px;
+    border: 0;
+    border-radius: var(--r-sm);
     padding: 11px 4px 9px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-    cursor: pointer;
     font: inherit;
     font-size: var(--step-1);
     font-weight: 500;
-    transition: transform 140ms ease, border-color 140ms ease;
+    color: var(--ink);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    background: var(--glass);
+    backdrop-filter: blur(var(--blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
+    box-shadow: inset 0 1px 0 0 var(--glass-spec), inset 0 0 0 1px var(--glass-rim);
+    transition: transform 150ms var(--ease);
   }
-
-  .grade:hover { transform: translateY(-2px); border-color: var(--accent); }
-  .grade:active { transform: translateY(0) scale(0.97); }
-
+  .grade:hover { transform: translateY(-2px); }
   .grade .when {
     font-family: "IBM Plex Mono", ui-monospace, monospace;
     font-size: 0.6875rem;
@@ -295,170 +563,24 @@
     font-variant-numeric: tabular-nums;
   }
 
-  .primary {
-    appearance: none;
-    width: 100%;
-    border: 1px solid var(--glass-edge);
-    background: var(--glass);
-    backdrop-filter: blur(var(--blur)) saturate(1.4);
-    -webkit-backdrop-filter: blur(var(--blur)) saturate(1.4);
-    color: var(--ink);
-    border-radius: 15px;
-    padding: 15px;
-    font: inherit;
-    font-weight: 500;
-    cursor: pointer;
-    box-shadow: var(--shadow-lift);
-    transition: transform 140ms ease;
-  }
+  .hint { text-align: center; color: var(--ink-3); font-size: var(--step-1); margin: auto 0 0; }
 
-  .primary:hover { transform: translateY(-1px); }
-
-  :focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-    border-radius: 12px;
-  }
-
-  /* ---------- today ---------- */
-
-  .stack { display: flex; flex-direction: column; gap: 12px; }
-
-  .tile {
-    position: relative;
-    border: 1px solid var(--glass-edge);
-    background: var(--glass);
-    backdrop-filter: blur(var(--blur)) saturate(1.5);
-    -webkit-backdrop-filter: blur(var(--blur)) saturate(1.5);
-    border-radius: 20px;
-    padding: 18px;
-    box-shadow: var(--shadow-lift);
-    overflow: hidden;
-  }
-
-  /* The sheen is what sells glass — a light edge along the top only. */
-  .tile::after {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--glass-sheen), transparent);
-  }
-
-  .tile-hero { padding: 22px; }
-
-  .hero-n {
-    font-family: "Newsreader", Georgia, serif;
-    font-size: 3.5rem;
-    line-height: 0.94;
-    font-weight: 300;
-    letter-spacing: -0.02em;
-    font-variant-numeric: tabular-nums;
-    margin: 6px 0 4px;
-  }
-
-  .hero-sub { color: var(--ink-2); font-size: var(--step-1); margin: 0; }
-
-  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-  .stat-n {
-    font-family: "Newsreader", Georgia, serif;
-    font-size: var(--step-4);
-    font-weight: 400;
-    font-variant-numeric: tabular-nums;
-    line-height: 1.1;
-    margin: 6px 0 2px;
-  }
-
-  .stat-l { font-size: var(--step-0); color: var(--ink-3); margin: 0; }
-
-  .tile h3 {
-    font-size: var(--step-1);
-    font-weight: 600;
-    margin: 0 0 10px;
-    color: var(--ink);
-  }
-
-  .queue { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
-
-  .queue li {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 10px;
-    font-size: var(--step-1);
-    color: var(--ink-2);
-  }
-
-  .queue .n {
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: var(--step-0);
-    color: var(--ink-3);
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* ---------- progress ---------- */
-
-  .topic {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 4px 12px;
-    padding-block: 15px;
-    border-bottom: 1px solid var(--hairline);
-    align-items: center;
-  }
-
-  .topic:last-of-type { border-bottom: none; }
-
-  .topic-name { font-size: var(--step-1); font-weight: 500; margin: 0; }
-
-  .topic-sub {
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: var(--step-0);
-    color: var(--ink-3);
-    margin: 0;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .spark { grid-column: 1 / -1; margin-top: 8px; }
-  .spark svg { display: block; width: 100%; height: 44px; overflow: visible; }
-
-  /* Status reads from a chip with a word in it, never from colour alone. */
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: var(--step-0);
-    letter-spacing: 0.04em;
-    color: var(--ink-2);
-    white-space: nowrap;
-  }
-
-  .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
-
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 16px;
-    padding-block: 12px 4px;
-  }
-
-  /* ---------- bottom nav ---------- */
+  /* ---------- nav ---------- */
 
   .nav {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 4px;
     padding: 5px;
-    margin-block: 4px 0;
-    margin-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-    border: 1px solid var(--glass-edge);
+    margin-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    border-radius: 18px;
     background: var(--glass);
-    backdrop-filter: blur(var(--blur)) saturate(1.5);
-    -webkit-backdrop-filter: blur(var(--blur)) saturate(1.5);
-    border-radius: 16px;
-    box-shadow: var(--shadow-lift);
+    backdrop-filter: blur(var(--blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
+    box-shadow:
+      inset 0 1px 0 0 var(--glass-spec),
+      inset 0 0 0 1px var(--glass-rim),
+      var(--glass-shadow);
   }
 
   .nav button {
@@ -470,194 +592,296 @@
     font-size: var(--step-1);
     font-weight: 500;
     padding: 9px 4px;
-    border-radius: 12px;
+    border-radius: 13px;
     cursor: pointer;
-    transition: color 160ms ease, background 160ms ease;
+    transition: color 200ms var(--ease), background 200ms var(--ease);
   }
+  .nav button[aria-selected="true"] { color: var(--ink); background: var(--accent-soft); }
 
-  .nav button[aria-selected="true"] {
-    color: var(--ink);
-    background: var(--accent-soft);
-  }
-
-  .note {
-    font-size: var(--step-0);
-    color: var(--ink-3);
-    text-align: center;
-    margin: 0;
-    padding-block: 10px 2px;
-  }
-
-  .done {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    justify-content: center;
-    height: 100%;
-    text-align: center;
-  }
-
-  .done h2 {
-    font-family: "Newsreader", Georgia, serif;
-    font-weight: 400;
-    font-size: var(--step-4);
-    margin: 0;
-  }
+  .note { font-size: var(--step-0); color: var(--ink-3); text-align: center; margin: 0; padding-top: 6px; }
 </style>
 
 <div class="app">
   <header class="topbar">
     <h1 class="wordmark">Élan<span>.</span></h1>
-    <span class="session-meta" id="meta">card 1 of 6</span>
+    <span class="meta" id="meta"></span>
   </header>
 
   <main class="screen" id="screen"></main>
 
   <nav class="nav" role="tablist" aria-label="Sections">
-    <button role="tab" id="tab-practice" aria-selected="true" data-view="practice">Practice</button>
-    <button role="tab" id="tab-today" aria-selected="false" data-view="today">Today</button>
-    <button role="tab" id="tab-progress" aria-selected="false" data-view="progress">Progress</button>
+    <button role="tab" aria-selected="true" data-view="path">Path</button>
+    <button role="tab" aria-selected="false" data-view="today">Today</button>
+    <button role="tab" aria-selected="false" data-view="progress">Progress</button>
   </nav>
 </div>
 
+<div id="overlay"></div>
+
 <script>
-  // Sample material, standing in for a real ingest. Questions follow the
-  // generator's rules: retrieval over recognition, one idea each, and every
-  // answer backed by a verbatim passage from the source.
+  const GOAL = {
+    title: "Implement a transformer from scratch",
+    target: "14 March",
+    weeksLeft: 5,
+    percent: 46,
+    pace: "on track"
+  };
+
+  const MODULES = [
+    { n: 1, name: "Linear algebra refresh", state: "done", detail: "mastered · 12 concepts" },
+    { n: 2, name: "Autograd and backpropagation", state: "done", detail: "mastered · 18 concepts" },
+    { n: 3, name: "The attention mechanism", state: "now", detail: "4 of 7 concepts solid",
+      task: "Derive why scaled dot-product attention divides by the square root of the key dimension — then check it against the paper.",
+      minutes: 14, due: 5 },
+    { n: 4, name: "Multi-head and positional encoding", state: "next", detail: "opens when module 3 is solid" },
+    { n: 5, name: "Training loop and optimisation", state: "locked", detail: "9 concepts" },
+    { n: 6, name: "Build it end to end", state: "locked", detail: "capstone" }
+  ];
+
   const DECK = [
-    {
-      topic: "Backpropagation",
-      type: "explanation",
-      prompt: "Why must the forward pass activations be kept in memory until the backward pass runs?",
-      answer: "Each layer's gradient is the upstream gradient times the local derivative, and that local derivative is a function of the layer's own input. Discard the activations and there is nothing left to evaluate it against.",
-      source: "we cache the activations on the way forward, because when we come back through we need the input to each layer to work out its local gradient",
-      cite: "Lecture 4 · 18:42"
-    },
-    {
-      topic: "Normalisation",
-      type: "discrimination",
-      prompt: "At inference time, which of batch norm and layer norm still depends on the batch, and why does that matter?",
-      answer: "Neither should — but batch norm only escapes it by switching to running statistics collected during training. Layer norm normalises across features within a single example, so it behaves identically at batch size one.",
-      source: "batch norm has this awkward train/test asymmetry, you keep a running mean and variance, whereas layer norm just doesn't care how many examples you hand it",
-      cite: "Lecture 6 · 07:15"
-    },
-    {
-      topic: "Optimisation",
-      type: "application",
-      prompt: "Your loss decreases smoothly on training data but oscillates violently on a held-out set. What does that pattern suggest before you reach for regularisation?",
-      answer: "Most likely the learning rate is too high relative to the held-out batch variance, or the two sets are not drawn from the same distribution. Both produce this signature without any overfitting being present.",
-      source: "people see a jagged validation curve and immediately add dropout, when very often the step size is simply too large",
-      cite: "Lecture 8 · 31:06"
-    },
-    {
-      topic: "Attention",
-      type: "explanation",
+    { topic: "Attention", type: "explanation",
       prompt: "What breaks if the dot products in scaled dot-product attention are not divided by the square root of the key dimension?",
       answer: "The dot products grow with dimension, pushing the softmax into a regime where one weight approaches 1 and the rest approach 0. Gradients through the softmax then vanish and the layer stops learning.",
       source: "for large values of d k the dot products get large in magnitude, pushing the softmax into regions where it has extremely small gradients",
-      cite: "Attention Is All You Need · §3.2.1"
-    },
-    {
-      topic: "Attention",
-      type: "recall",
+      cite: "Attention Is All You Need · §3.2.1" },
+    { topic: "Attention", type: "recall",
       prompt: "In multi-head attention, what is held constant as the number of heads increases?",
       answer: "The total computational cost. Each head runs at a reduced dimension — the model dimension divided by the head count — so the combined cost matches a single full-dimension head.",
       source: "due to the reduced dimension of each head, the total computational cost is similar to that of single-head attention with full dimensionality",
-      cite: "Attention Is All You Need · §3.2.2"
-    },
-    {
-      topic: "Optimisation",
-      type: "application",
-      prompt: "You halve the batch size but keep the learning rate fixed. What happens to the gradient noise, and what is the usual correction?",
-      answer: "Gradient estimates get noisier, since each step averages over fewer examples. The common correction is to scale the learning rate down with the batch size — linearly is the usual first approximation.",
-      source: "the variance of your gradient estimate goes up as the batch shrinks, so the step size has to come down with it",
-      cite: "Lecture 8 · 44:20"
-    }
+      cite: "Attention Is All You Need · §3.2.2" },
+    { topic: "Attention", type: "discrimination",
+      prompt: "Self-attention and cross-attention differ in exactly one respect. Which?",
+      answer: "Where the keys and values come from. Self-attention draws queries, keys and values from the same sequence; cross-attention takes queries from the decoder and keys and values from the encoder output.",
+      source: "the queries come from the previous decoder layer, and the memory keys and values come from the output of the encoder",
+      cite: "Attention Is All You Need · §3.2.3" },
+    { topic: "Attention", type: "application",
+      prompt: "You mask the upper triangle of the attention score matrix before the softmax rather than after. Why does the order matter?",
+      answer: "Masking after the softmax leaves the masked positions having already contributed to the normalisation, so the remaining weights no longer sum to one. Masking before, with negative infinity, removes them from the sum entirely.",
+      source: "we implement this inside of scaled dot-product attention by masking out all values in the input of the softmax",
+      cite: "Attention Is All You Need · §3.2.3" },
+    { topic: "Attention", type: "explanation",
+      prompt: "Why does a transformer need positional encoding at all, when an RNN does not?",
+      answer: "Attention is permutation-equivariant — shuffle the input tokens and the output shuffles identically, with no change in content. An RNN gets order for free from the sequence of its recurrence; attention has to be told.",
+      source: "since our model contains no recurrence and no convolution, we must inject some information about the relative or absolute position of the tokens",
+      cite: "Attention Is All You Need · §3.5" }
   ];
 
-  // Retention traces over the last 14 review days, per topic.
   const TOPICS = [
-    { name: "Attention", status: "solid", retention: 94, cards: 18,
-      trace: [62, 68, 74, 71, 79, 83, 86, 84, 88, 91, 90, 93, 92, 94] },
-    { name: "Backpropagation", status: "solid", retention: 88, cards: 24,
-      trace: [55, 63, 70, 76, 74, 80, 83, 81, 85, 86, 84, 87, 89, 88] },
-    { name: "Normalisation", status: "slipping", retention: 61, cards: 11,
-      trace: [70, 76, 81, 84, 82, 79, 75, 72, 74, 70, 67, 64, 62, 61] },
-    { name: "Optimisation", status: "weak", retention: 38, cards: 9,
-      trace: [58, 61, 57, 52, 55, 48, 44, 47, 41, 43, 39, 42, 37, 38] }
+    { name: "Autograd", status: "solid", retention: 91, trace: [58, 66, 72, 70, 78, 83, 85, 84, 88, 90, 89, 92, 90, 91] },
+    { name: "Linear algebra", status: "solid", retention: 86, trace: [62, 68, 73, 77, 75, 80, 82, 81, 84, 85, 83, 86, 87, 86] },
+    { name: "Attention", status: "slipping", retention: 58, trace: [40, 48, 56, 63, 67, 64, 61, 66, 62, 59, 61, 57, 60, 58] },
+    { name: "Optimisation", status: "weak", retention: 34, trace: [52, 55, 50, 46, 49, 43, 40, 42, 37, 39, 35, 38, 33, 34] }
   ];
+
+  // Cumulative progress against the pace the deadline requires.
+  const PACE_ACTUAL = [0, 6, 13, 19, 24, 32, 37, 41, 46];
+  const PACE_TARGET = [0, 5, 11, 16, 22, 27, 33, 38, 44];
 
   const STATUS_LABEL = { solid: "Solid", slipping: "Slipping", weak: "Needs work" };
 
-  let view = "practice";
+  let view = "path";
   let index = 0;
   let revealed = false;
   let graded = 0;
 
   const screen = document.getElementById("screen");
+  const overlay = document.getElementById("overlay");
   const meta = document.getElementById("meta");
 
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-  /* ---------- sparkline ---------- */
+  /* ---------- charts ---------- */
 
   function sparkline(trace, status) {
-    const W = 320, H = 44, PAD = 3;
+    const W = 320, H = 40, PAD = 3;
     const min = Math.min(...trace), max = Math.max(...trace);
     const span = Math.max(max - min, 1);
-    const x = (i) => (i / (trace.length - 1)) * W;
-    const y = (v) => PAD + (1 - (v - min) / span) * (H - PAD * 2);
-
-    const pts = trace.map((v, i) => [x(i), y(v)]);
-    const line = pts.map(([px, py], i) => `${i ? "L" : "M"}${px.toFixed(1)} ${py.toFixed(1)}`).join(" ");
-    const area = `${line} L${W} ${H} L0 ${H} Z`;
+    const pts = trace.map((v, i) => [
+      (i / (trace.length - 1)) * W,
+      PAD + (1 - (v - min) / span) * (H - PAD * 2)
+    ]);
+    const line = pts.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join(" ");
     const last = pts[pts.length - 1];
-    const id = "g" + status;
+    const id = "sg-" + status;
 
     return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img"
-              aria-label="Retention trend over the last 14 review days, ending at ${trace[trace.length - 1]} percent">
-      <defs>
-        <linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="var(--${status})" stop-opacity="0.22"/>
-          <stop offset="100%" stop-color="var(--${status})" stop-opacity="0"/>
-        </linearGradient>
-      </defs>
-      <path d="${area}" fill="url(#${id})"/>
+        aria-label="Recall over the last 14 reviews, ending at ${trace[trace.length - 1]} percent">
+      <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="var(--${status})" stop-opacity="0.2"/>
+        <stop offset="100%" stop-color="var(--${status})" stop-opacity="0"/>
+      </linearGradient></defs>
+      <path d="${line} L${W} ${H} L0 ${H} Z" fill="url(#${id})"/>
       <path d="${line}" fill="none" stroke="var(--${status})" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+        stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
       <circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="3.5"
-              fill="var(--${status})" stroke="var(--surface)" stroke-width="2"/>
+        fill="var(--${status})" stroke="var(--ground)" stroke-width="2"/>
+    </svg>`;
+  }
+
+  function paceChart() {
+    const W = 320, H = 150, L = 8, R = 34, T = 12, B = 26;
+    const maxY = 60;
+    const x = (i) => L + (i / (PACE_ACTUAL.length - 1)) * (W - L - R);
+    const y = (v) => T + (1 - v / maxY) * (H - T - B);
+    const path = (d) => d.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(" ");
+
+    const grid = [0, 20, 40, 60].map((v) =>
+      `<line x1="${L}" y1="${y(v)}" x2="${W - R}" y2="${y(v)}" stroke="var(--hairline)" stroke-width="1"/>
+       <text x="${W - R + 6}" y="${y(v) + 4}" fill="var(--ink-3)"
+         font-family="IBM Plex Mono, monospace" font-size="10">${v}%</text>`).join("");
+
+    const weeks = [0, 4, 8].map((i) =>
+      `<text x="${x(i)}" y="${H - 6}" fill="var(--ink-3)" text-anchor="${i === 0 ? "start" : i === 8 ? "end" : "middle"}"
+        font-family="IBM Plex Mono, monospace" font-size="10">wk ${i + 1}</text>`).join("");
+
+    const lastI = PACE_ACTUAL.length - 1;
+
+    return `<svg viewBox="0 0 ${W} ${H}" role="img"
+        aria-label="Cumulative progress by week, currently 46 percent against a required pace of 44 percent">
+      ${grid}${weeks}
+      <path d="${path(PACE_TARGET)}" fill="none" stroke="var(--ink-3)" stroke-width="1.5"
+        stroke-dasharray="4 4" stroke-linecap="round"/>
+      <path d="${path(PACE_ACTUAL)}" fill="none" stroke="var(--accent)" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="${x(lastI)}" cy="${y(PACE_ACTUAL[lastI])}" r="4"
+        fill="var(--accent)" stroke="var(--ground)" stroke-width="2"/>
     </svg>`;
   }
 
   /* ---------- views ---------- */
 
-  function practiceView() {
-    if (index >= DECK.length) {
-      return `<div class="done">
-        <p class="eyebrow">Session complete</p>
-        <h2>${graded} cards reviewed.</h2>
-        <p class="hero-sub">Next batch is due tomorrow morning. Nothing else is owed today.</p>
+  function pathView() {
+    const nodes = MODULES.map((m) => {
+      const mark = m.state === "done" ? "✓" : m.n;
+      const open = m.state === "now" ? `
+        <div class="now-card">
+          <p class="eyebrow">Next</p>
+          <p class="task">${esc(m.task)}</p>
+          <button class="btn" id="start">Start · ${m.minutes} min</button>
+        </div>` : "";
+
+      return `<div class="node ${m.state}">
+        <span class="marker" aria-hidden="true">${mark}</span>
+        <div class="node-body">
+          <p class="node-name">${esc(m.name)}</p>
+          <p class="node-sub">${esc(m.detail)}</p>
+        </div>
+        ${open}
       </div>`;
+    }).join("");
+
+    return `<div class="stack fade">
+      <section class="glass goal">
+        <p class="eyebrow">Goal · ${GOAL.weeksLeft} weeks left</p>
+        <h2>${esc(GOAL.title)}</h2>
+        <div class="bar"><i style="width:${GOAL.percent}%"></i></div>
+        <div class="goal-foot">
+          <span class="pct">${GOAL.percent}%</span>
+          <span class="pace"><span class="dot" style="background:var(--solid)"></span>${esc(GOAL.pace)} for ${esc(GOAL.target)}</span>
+        </div>
+      </section>
+      <section class="glass card path">${nodes}</section>
+      <p class="note">Sample plan — built from a paper and a lecture series.</p>
+    </div>`;
+  }
+
+  function todayView() {
+    const due = DECK.length - index;
+    return `<div class="stack fade">
+      <section class="glass card">
+        <p class="eyebrow">Today</p>
+        <p class="task" style="font-family:Newsreader,Georgia,serif;font-size:var(--step-4);font-weight:300;line-height:1.24;margin:8px 0 16px;text-wrap:balance">
+          Finish the attention derivation, then clear ${due} reviews.
+        </p>
+        <button class="btn" id="start">Start · 14 min</button>
+      </section>
+      <div class="duo">
+        <div class="glass card">
+          <p class="eyebrow">Reviews</p>
+          <p class="stat-n">${due}</p>
+          <p class="stat-l">due now</p>
+        </div>
+        <div class="glass card">
+          <p class="eyebrow">Done</p>
+          <p class="stat-n">${graded}</p>
+          <p class="stat-l">today</p>
+        </div>
+      </div>
+      <section class="glass card">
+        <h3>This week</h3>
+        <ul class="rows">
+          <li><span>Finish module 3</span><span class="n">3 concepts</span></li>
+          <li><span>Re-read §3.2 of the paper</span><span class="n">20 min</span></li>
+          <li><span>Optimisation is decaying</span><span class="n">34%</span></li>
+        </ul>
+      </section>
+    </div>`;
+  }
+
+  function progressView() {
+    const legend = Object.entries(STATUS_LABEL).map(([k, label]) =>
+      `<span class="chip"><span class="dot" style="background:var(--${k})"></span>${label}</span>`).join("");
+
+    const topics = TOPICS.map((t) => `
+      <article class="topic">
+        <div class="topic-head">
+          <p class="topic-name">${esc(t.name)}</p>
+          <span class="chip"><span class="dot" style="background:var(--${t.status})"></span>${STATUS_LABEL[t.status]} · ${t.retention}%</span>
+        </div>
+        <div class="spark">${sparkline(t.trace, t.status)}</div>
+      </article>`).join("");
+
+    return `<div class="stack fade">
+      <section class="glass card">
+        <h3>Pace toward ${esc(GOAL.target)}</h3>
+        <div class="legend">
+          <span class="chip"><span class="dot" style="background:var(--accent)"></span>You · ${GOAL.percent}%</span>
+          <span class="chip"><span class="dot" style="background:var(--ink-3)"></span>Required pace · 44%</span>
+        </div>
+        <div class="chart-wrap">${paceChart()}</div>
+      </section>
+      <section class="glass card">
+        <h3>What you would recall today</h3>
+        <div class="legend">${legend}</div>
+        ${topics}
+      </section>
+      <p class="note">Traces show recall at each review, not time spent.</p>
+    </div>`;
+  }
+
+  /* ---------- practice sheet ---------- */
+
+  function sheet() {
+    if (index >= DECK.length) {
+      return `<div class="sheet"><div class="sheet-inner">
+        <div class="sheet-top"><span class="eyebrow">Module 3</span>
+          <button class="close" id="close">Done</button></div>
+        <div style="margin:auto 0;text-align:center;display:flex;flex-direction:column;gap:10px">
+          <p class="eyebrow">Session complete</p>
+          <p style="font-family:Newsreader,Georgia,serif;font-size:var(--step-4);font-weight:300;margin:0">
+            ${graded} reviewed. Attention is now 6 of 7 solid.</p>
+        </div>
+        <button class="btn" id="close2">Back to path</button>
+      </div></div>`;
     }
 
     const c = DECK[index];
-    const head = `<div class="q-head">
-        <span class="qtype">${esc(c.type)}</span>
-        <span class="eyebrow">${esc(c.topic)}</span>
+    const head = `<div class="sheet-top">
+        <span class="eyebrow">${esc(c.topic)} · ${index + 1} of ${DECK.length}</span>
+        <button class="close" id="close">Close</button>
       </div>
       <p class="prompt">${esc(c.prompt)}</p>`;
 
     if (!revealed) {
-      return `<section class="practice">
+      return `<div class="sheet"><div class="sheet-inner">
         ${head}
-        <p class="reveal-hint">Answer it in your head first.</p>
-        <button class="primary" id="reveal">Show answer</button>
-      </section>`;
+        <p class="hint">Answer it in your head first.</p>
+        <button class="btn ghost" id="reveal">Show answer</button>
+      </div></div>`;
     }
 
-    return `<section class="practice">
+    return `<div class="sheet"><div class="sheet-inner">
       ${head}
       <div class="answer-block">
         <p class="answer">${esc(c.answer)}</p>
@@ -669,93 +893,35 @@
           <button class="grade" data-grade="easy">Easy<span class="when">16d</span></button>
         </div>
       </div>
-    </section>`;
-  }
-
-  function todayView() {
-    const due = DECK.length - index;
-    const rows = TOPICS.map((t) =>
-      `<li><span>${esc(t.name)}</span><span class="n">${t.cards} cards</span></li>`).join("");
-
-    return `<div class="stack">
-      <div class="tile tile-hero">
-        <p class="eyebrow">Due now</p>
-        <p class="hero-n">${due}</p>
-        <p class="hero-sub">About nine minutes. Optimisation is the weakest of the four and leads the queue.</p>
-      </div>
-      <div class="duo">
-        <div class="tile">
-          <p class="eyebrow">Retention</p>
-          <p class="stat-n">78%</p>
-          <p class="stat-l">across 62 cards</p>
-        </div>
-        <div class="tile">
-          <p class="eyebrow">Reviewed</p>
-          <p class="stat-n">${graded}</p>
-          <p class="stat-l">today</p>
-        </div>
-      </div>
-      <div class="tile">
-        <h3>In your deck</h3>
-        <ul class="queue">${rows}</ul>
-      </div>
-      <p class="note">Sample deck — ingested from a lecture series.</p>
-    </div>`;
-  }
-
-  function progressView() {
-    const legend = Object.entries(STATUS_LABEL).map(([k, label]) =>
-      `<span class="chip"><span class="dot" style="background:var(--${k})"></span>${label}</span>`).join("");
-
-    const topics = TOPICS.map((t) => `
-      <article class="topic">
-        <div>
-          <p class="topic-name">${esc(t.name)}</p>
-          <p class="topic-sub">${t.cards} cards · 14 days</p>
-        </div>
-        <span class="chip">
-          <span class="dot" style="background:var(--${t.status})"></span>
-          ${STATUS_LABEL[t.status]} · ${t.retention}%
-        </span>
-        <div class="spark">${sparkline(t.trace, t.status)}</div>
-      </article>`).join("");
-
-    return `<div class="stack">
-      <div class="tile">
-        <p class="eyebrow">Estimated retention</p>
-        <p class="hero-n">78<span style="font-size:1.5rem">%</span></p>
-        <p class="hero-sub">What you would recall today without looking. Two topics are drifting.</p>
-      </div>
-      <div class="tile">
-        <h3>By topic</h3>
-        <div class="legend">${legend}</div>
-        ${topics}
-      </div>
-      <p class="note">Traces show recall at each review, not time spent.</p>
-    </div>`;
+    </div></div>`;
   }
 
   /* ---------- render ---------- */
 
+  let inSheet = false;
+
+  function renderSheet() {
+    overlay.innerHTML = inSheet ? sheet() : "";
+    if (!inSheet) return;
+
+    const close = () => { inSheet = false; renderSheet(); render(); };
+    overlay.querySelector("#close")?.addEventListener("click", close);
+    overlay.querySelector("#close2")?.addEventListener("click", close);
+    overlay.querySelector("#reveal")?.addEventListener("click", () => { revealed = true; renderSheet(); });
+    overlay.querySelectorAll(".grade").forEach((b) =>
+      b.addEventListener("click", () => { graded++; index++; revealed = false; renderSheet(); }));
+  }
+
   function render() {
-    screen.innerHTML =
-      view === "practice" ? practiceView() :
-      view === "today" ? todayView() : progressView();
+    screen.innerHTML = view === "path" ? pathView()
+      : view === "today" ? todayView() : progressView();
 
-    meta.textContent = view === "practice"
-      ? (index >= DECK.length ? "session complete" : `card ${index + 1} of ${DECK.length}`)
-      : `${DECK.length - index} due`;
+    meta.textContent = view === "progress"
+      ? `${GOAL.percent}% of goal`
+      : `${DECK.length - index} due · ${GOAL.weeksLeft} wks left`;
 
-    const reveal = document.getElementById("reveal");
-    if (reveal) reveal.addEventListener("click", () => { revealed = true; render(); });
-
-    screen.querySelectorAll(".grade").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        graded += 1;
-        index += 1;
-        revealed = false;
-        render();
-      });
+    screen.querySelector("#start")?.addEventListener("click", () => {
+      inSheet = true; revealed = false; renderSheet();
     });
   }
 
