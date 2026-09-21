@@ -36,11 +36,14 @@ describe("scheduling", () => {
   });
 
   it("returns only due cards, hardest first", () => {
+    // A first "easy" answer schedules ~16 days out; again/hard/good stay in
+    // same-day learning steps. Day 20 is past the easy card but not past one
+    // reviewed on day 18.
     const easy = { id: "easy", card: review(newCard(T0), "easy", T0) };
     const hard = { id: "hard", card: review(newCard(T0), "hard", T0) };
-    const future = { id: "future", card: review(newCard(T0), "easy", daysAfter(30)) };
+    const notYet = { id: "notYet", card: review(newCard(T0), "easy", daysAfter(18)) };
 
-    const queue = dueQueue([easy, hard, future], daysAfter(10));
+    const queue = dueQueue([easy, hard, notYet], daysAfter(20));
     expect(queue.map((q) => q.id)).toEqual(["hard", "easy"]);
   });
 });

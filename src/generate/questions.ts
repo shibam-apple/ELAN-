@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
+import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
 import { QuestionSet, type SourceMaterial } from "../types.js";
 import { QUESTION_SYSTEM_PROMPT, buildUserPrompt } from "./prompt.js";
 
@@ -11,10 +11,12 @@ export async function generateQuestions(
   material: SourceMaterial,
   targetCount = 20,
 ): Promise<QuestionSet> {
-  const response = await client.messages.parse({
+  // Structured outputs live on the beta path in @anthropic-ai/sdk 0.70.x.
+  const response = await client.beta.messages.parse({
     model: MODEL,
     max_tokens: 16000,
-    thinking: { type: "adaptive" },
+    // Thinking is omitted deliberately: Opus 5 runs adaptive thinking by
+    // default, and this SDK version predates the explicit "adaptive" type.
     system: [
       {
         type: "text",
@@ -33,19 +35,19 @@ export async function generateQuestions(
         }),
       },
     ],
-    output_config: { format: zodOutputFormat(QuestionSet) },
+    output_format: betaZodOutputFormat(QuestionSet),
   });
 
   if (response.stop_reason === "refusal") {
-    throw new Error(`Generation refused: ${response.stop_details?.explanation ?? "no reason given"}`);
+    throw new Error("Generation was refused by the safety classifier.");
   }
   if (!response.parsed_output) {
     throw new Error("Model returned no parseable question set.");
   }
 
-  const usage = response.usage;
+  const { input_tokens, output_tokens, cache_read_input_tokens } = response.usage;
   process.stderr.write(
-    `[elan] ${MODEL} in=${usage.input_tokens} cached=${usage.cache_read_input_tokens ?? 0} out=${usage.output_tokens}\n`,
+    `[elan] ${MODEL} in=${input_tokens} cached=${cache_read_input_tokens ?? 0} out=${output_tokens}\n`,
   );
 
   return response.parsed_output;

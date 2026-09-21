@@ -1,4 +1,11 @@
-import { createEmptyCard, fsrs, generatorParameters, Rating, type Card } from "ts-fsrs";
+import {
+  createEmptyCard,
+  fsrs,
+  generatorParameters,
+  Rating,
+  type Card,
+  type Grade as FsrsGrade,
+} from "ts-fsrs";
 
 /**
  * Scheduling is deterministic and model-free on purpose: it is arithmetic over
@@ -10,7 +17,9 @@ const scheduler = fsrs(generatorParameters({ enable_fuzz: false }));
 
 export type Grade = "again" | "hard" | "good" | "easy";
 
-const GRADE_TO_RATING: Record<Grade, Rating> = {
+// ts-fsrs distinguishes Grade (a real answer) from Rating (which also covers
+// Manual rescheduling). Only the four answer ratings are reachable from here.
+const GRADE_TO_RATING: Record<Grade, FsrsGrade> = {
   again: Rating.Again,
   hard: Rating.Hard,
   good: Rating.Good,
@@ -33,6 +42,5 @@ export function isDue(card: Card, now = new Date()): boolean {
 export function dueQueue<T extends { card: Card }>(items: T[], now = new Date()): T[] {
   return items
     .filter((item) => isDue(item.card, now))
-    .sort((a, b) => a.card.difficulty - b.card.difficulty)
-    .reverse();
+    .sort((a, b) => b.card.difficulty - a.card.difficulty);
 }
